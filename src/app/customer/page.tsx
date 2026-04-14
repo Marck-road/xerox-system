@@ -11,7 +11,10 @@ import ReviewModal from '@/components/customer/ReviewModal';
 import CustomerForm from '@/components/customer/CustomerForm';
 import SuccessScreen from '@/components/customer/SuccessScreen';
 
+import { submitOrder } from '@/lib/supabase/orders';
+
 export default function CustomerPage() {
+
   const formRef = useRef<HTMLDivElement>(null);
 
   const [showReview, setShowReview] = useState(false);
@@ -57,6 +60,7 @@ export default function CustomerPage() {
     setSubmittedFiles(files);
     setSubmittedName(name);
     setSubmittedEmail(email);
+    submitOrder({ name, email, branch, pickupDate, files });
     setShowReview(false);
     resetAll();
     setSubmitted(true);

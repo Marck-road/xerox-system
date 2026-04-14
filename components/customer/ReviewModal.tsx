@@ -60,7 +60,7 @@ export default function ReviewModal({
                 </p>
 
                 {files.map((f, idx) => (
-                <div key={f.id} className="border border-zinc-200 rounded-xl overflow-hidden">
+                <div key={f.file_id} className="border border-zinc-200 rounded-xl overflow-hidden">
                     {/* File name header */}
                     <div className="flex items-center gap-2 bg-zinc-50 border-b border-zinc-200 px-3 py-2">
                     <div className="w-6 h-6 rounded-md bg-orange-100 flex items-center justify-center shrink-0">
@@ -80,9 +80,9 @@ export default function ReviewModal({
                     <div className="px-3 py-2 grid grid-cols-2 gap-x-4 gap-y-1">
                     <Detail label="Service" value={f.service.replace('print-', 'Print & ').replace('print-only', 'Print Only')} />
                     <Detail label="Copies" value={String(f.copies)} />
-                    <Detail label="Color" value={f.colorMode === 'black-and-white' ? 'B&W' : 'Colored'} />
-                    <Detail label="Paper Size" value={f.paperSize} />
-                    {f.softboundColor && <Detail label="Softbound Color" value={f.softboundColor} className="col-span-2" />}
+                    <Detail label="Color" value={f.color_mode === 'black-and-white' ? 'B&W' : 'Colored'} />
+                    <Detail label="Paper Size" value={f.paper_size} />
+                    {f.softbound_color && <Detail label="Softbound Color" value={f.softbound_color} className="col-span-2" />}
                     {f.notes && <Detail label="Notes" value={f.notes} className="col-span-2" />}
                     
                     </div>

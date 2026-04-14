@@ -36,7 +36,7 @@ export default function FileCard({
                     </p>
                     <p className="text-xs text-zinc-400">{(file.file.size / 1024).toFixed(1)} KB</p>
                 </div>
-                <button onClick={() => removeFile(file.id)} className="cursor-pointer text-zinc-300 hover:text-red-400 transition-colors shrink-0 ml-1">
+                <button onClick={() => removeFile(file.file_id)} className="cursor-pointer text-zinc-300 hover:text-red-400 transition-colors shrink-0 ml-1">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -52,9 +52,9 @@ export default function FileCard({
                 Service Chosen <span className="text-orange-500">*</span>
                 </Label>
                 <Select value={file.service} onValueChange={(v) => {
-                    updateFile(file.id, 'service', v as Service)
+                    updateFile(file.file_id, 'service', v as Service)
                     if (v !== 'print-softbound') {
-                        updateFile(file.id, 'softboundColor', null)
+                        updateFile(file.file_id, 'softbound_color', null)
                     }
                 }}>
                 <SelectTrigger className="h-9 w-full rounded-3xl border border-transparent bg-input/50 px-3 text-sm transition-[color,box-shadow,background-color] focus:ring-3 focus:ring-ring/30 focus:border-ring">
@@ -75,12 +75,12 @@ export default function FileCard({
                     Copies <span className="text-orange-500">*</span>
                 </Label>
                 <Input type="number" min={1}
-                    value={file.copies} onChange={(e) => updateFile(file.id, 'copies', Number(e.target.value))}
+                    value={file.copies} onChange={(e) => updateFile(file.file_id, 'copies', Number(e.target.value))}
                     className="border-zinc-200 focus-visible:ring-orange-400 h-9 text-sm" />
                 </div>
                 <div className="flex flex-col gap-1">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Paper Size</Label>
-                <Select value={file.paperSize} onValueChange={(v) => updateFile(file.id, 'paperSize', v as PaperSize)}>
+                <Select value={file.paper_size} onValueChange={(v) => updateFile(file.file_id, 'paper_size', v as PaperSize)}>
                     <SelectTrigger className="border-zinc-200 focus:ring-orange-400 h-9 text-xs">
                     <SelectValue />
                     </SelectTrigger>
@@ -97,7 +97,7 @@ export default function FileCard({
             <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Color</Label>
-                <Select value={file.colorMode} onValueChange={(v) => updateFile(file.id, 'colorMode', v as ColorMode)}>
+                <Select value={file.color_mode} onValueChange={(v) => updateFile(file.file_id, 'color_mode', v as ColorMode)}>
                     <SelectTrigger className="border-zinc-200 focus:ring-orange-400 h-9 text-xs">
                     <SelectValue />
                     </SelectTrigger>
@@ -110,7 +110,7 @@ export default function FileCard({
                 {(file.service === 'print-softbound') && (
                 <div className="flex flex-col gap-1">
                     <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Softbound Color</Label>
-                    <Select value={file.softboundColor ?? ''} onValueChange={(v) => updateFile(file.id, 'softboundColor', v as SoftboundColor)}>                                
+                    <Select value={file.softbound_color ?? ''} onValueChange={(v) => updateFile(file.file_id, 'softbound_color', v as SoftboundColor)}>                                
                     <SelectTrigger className="border-zinc-200 focus:ring-orange-400 h-9 text-xs">
                         <SelectValue />
                     </SelectTrigger>
@@ -129,7 +129,7 @@ export default function FileCard({
             {/* Per-file notes */}
             <div className="flex flex-col gap-1">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Notes for this file</Label>
-                <Textarea value={file.notes} onChange={(e) => updateFile(file.id, 'notes', e.target.value)}
+                <Textarea value={file.notes} onChange={(e) => updateFile(file.file_id, 'notes', e.target.value)}
                 placeholder="Double-sided? Specific pages only?" rows={2}
                 className="border-zinc-200 focus-visible:ring-orange-400 resize-none text-sm" />
             </div>
