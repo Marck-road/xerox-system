@@ -4,6 +4,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { FileOrder } from '@/types/order';
+import React from 'react';
 
 type Props = {
     open: boolean; 
@@ -11,7 +12,8 @@ type Props = {
     name: string;
     email: string;
     pickupDate: Date | undefined;
-    files: FileOrder[]; onConfirm: () => void
+    files: FileOrder[];
+    onConfirm: () => Promise<void>;
 };
 
 function Detail({ label, value, className }: { label: string; value: string; className?: string }) {
@@ -30,9 +32,11 @@ export default function ReviewModal({
     email,
     pickupDate,
     files,
-    onConfirm
+    onConfirm,
 }: Props)
 {    
+    const [loading, setLoading] = React.useState(false)
+    
     return(
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-md bg-white max-h-[90vh] overflow-y-auto">
@@ -93,13 +97,19 @@ export default function ReviewModal({
             <Separator />
 
             <Button
-                onClick={() => {
-                    onConfirm();
-                    setOpen(false);
+                disabled={loading}
+                onClick={async () => {
+                try {
+                    setLoading(true)
+                    await onConfirm()
+                    setOpen(false)
+                } finally {
+                    setLoading(false)
+                }
                 }}
                 className="w-full py-5 font-bold cursor-pointer text-base bg-orange-500 hover:bg-orange-400 text-white mt-1"
             >
-                Confirm Order →
+                {loading ? "Processing..." : "Confirm Order →"}
             </Button>
             </DialogContent>
         </Dialog>

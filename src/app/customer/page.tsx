@@ -56,14 +56,20 @@ export default function CustomerPage() {
     setShowReview(false);
   };
 
-  const handleConfirm = () => {
-    setSubmittedFiles(files);
-    setSubmittedName(name);
-    setSubmittedEmail(email);
-    submitOrder({ name, email, branch, pickupDate, files });
-    setShowReview(false);
-    resetAll();
-    setSubmitted(true);
+  const handleConfirm = async () => {
+    try {
+      await submitOrder({ name, email, branch, pickupDate, files });
+
+      setSubmittedFiles(files);
+      setSubmittedName(name);
+      setSubmittedEmail(email);
+
+      setSubmitted(true);
+      setShowReview(false);
+      resetAll();
+    } catch (err) {
+      console.error("Order submission failed:", err);
+    }
   };
 
   // ── Success screen ────────────────────────────────────
@@ -126,7 +132,9 @@ export default function CustomerPage() {
         name={name}
         email={email}
         pickupDate={pickupDate}
-        onConfirm={handleConfirm}
+        onConfirm={async () => {
+          await handleConfirm()
+        }}
       />
 
     </div>
