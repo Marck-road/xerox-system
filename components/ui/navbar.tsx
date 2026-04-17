@@ -31,34 +31,6 @@ export default function Navbar() {
           <span className="text-orange-400 font-bold">Copier</span>
         </span>
       </div>
-
-      {/* Nav links */}
-      <div className="hidden md:flex items-center gap-6">
-        {["Dashboard", "Connections", "History", "Docs"].map((item) => (
-          <a
-            key={item}
-            href="#"
-            className="text-zinc-400 hover:text-white text-sm font-medium transition-colors duration-150 relative group"
-          >
-            {item}
-            <span className="absolute -bottom-0.5 left-0 w-0 group-hover:w-full h-px bg-orange-400 transition-all duration-200" />
-          </a>
-        ))}
-      </div>
-
-      {/* Right actions */}
-      <div className="flex items-center gap-3">
-        {/* Status pill */}
-        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
-          <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-          <span className="text-orange-400 text-xs font-medium">Active</span>
-        </div>
-
-        {/* Avatar */}
-        <button className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-orange-500/20 hover:shadow-orange-500/40 transition-shadow duration-200">
-          JD
-        </button>
-      </div>
     </nav>
   );
 }

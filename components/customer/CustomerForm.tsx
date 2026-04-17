@@ -104,9 +104,9 @@ export default function CustomerForm({
                       <SelectValue placeholder="Select branch…" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="branch1">Western</SelectItem>
-                      <SelectItem value="branch2">EVSU Outside</SelectItem>
-                      <SelectItem value="branch3">EVSU Inside</SelectItem>
+                      <SelectItem value="Western">Western</SelectItem>
+                      <SelectItem value="EVSU Outside">EVSU Outside</SelectItem>
+                      <SelectItem value="EVSU Inside">EVSU Inside</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -139,7 +139,7 @@ export default function CustomerForm({
 
                     {files.map((file, index) => (
                     <FileCard
-                        key={file.id}
+                        key={file.file_id}
                         file={file}
                         index={index}
                         removeFile={removeFile}

@@ -11,7 +11,10 @@ import ReviewModal from '@/components/customer/ReviewModal';
 import CustomerForm from '@/components/customer/CustomerForm';
 import SuccessScreen from '@/components/customer/SuccessScreen';
 
+import { submitOrder } from '@/lib/supabase/orders';
+
 export default function CustomerPage() {
+
   const formRef = useRef<HTMLDivElement>(null);
 
   const [showReview, setShowReview] = useState(false);
@@ -53,13 +56,20 @@ export default function CustomerPage() {
     setShowReview(false);
   };
 
-  const handleConfirm = () => {
-    setSubmittedFiles(files);
-    setSubmittedName(name);
-    setSubmittedEmail(email);
-    setShowReview(false);
-    resetAll();
-    setSubmitted(true);
+  const handleConfirm = async () => {
+    try {
+      await submitOrder({ name, email, branch, pickupDate, files });
+
+      setSubmittedFiles(files);
+      setSubmittedName(name);
+      setSubmittedEmail(email);
+
+      setSubmitted(true);
+      setShowReview(false);
+      resetAll();
+    } catch (err) {
+      console.error("Order submission failed:", err);
+    }
   };
 
   // ── Success screen ────────────────────────────────────
@@ -122,7 +132,9 @@ export default function CustomerPage() {
         name={name}
         email={email}
         pickupDate={pickupDate}
-        onConfirm={handleConfirm}
+        onConfirm={async () => {
+          await handleConfirm()
+        }}
       />
 
     </div>

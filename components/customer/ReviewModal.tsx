@@ -4,6 +4,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { FileOrder } from '@/types/order';
+import React from 'react';
 
 type Props = {
     open: boolean; 
@@ -11,7 +12,8 @@ type Props = {
     name: string;
     email: string;
     pickupDate: Date | undefined;
-    files: FileOrder[]; onConfirm: () => void
+    files: FileOrder[];
+    onConfirm: () => Promise<void>;
 };
 
 function Detail({ label, value, className }: { label: string; value: string; className?: string }) {
@@ -30,9 +32,11 @@ export default function ReviewModal({
     email,
     pickupDate,
     files,
-    onConfirm
+    onConfirm,
 }: Props)
 {    
+    const [loading, setLoading] = React.useState(false)
+    
     return(
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-md bg-white max-h-[90vh] overflow-y-auto">
@@ -60,7 +64,7 @@ export default function ReviewModal({
                 </p>
 
                 {files.map((f, idx) => (
-                <div key={f.id} className="border border-zinc-200 rounded-xl overflow-hidden">
+                <div key={f.file_id} className="border border-zinc-200 rounded-xl overflow-hidden">
                     {/* File name header */}
                     <div className="flex items-center gap-2 bg-zinc-50 border-b border-zinc-200 px-3 py-2">
                     <div className="w-6 h-6 rounded-md bg-orange-100 flex items-center justify-center shrink-0">
@@ -80,9 +84,9 @@ export default function ReviewModal({
                     <div className="px-3 py-2 grid grid-cols-2 gap-x-4 gap-y-1">
                     <Detail label="Service" value={f.service.replace('print-', 'Print & ').replace('print-only', 'Print Only')} />
                     <Detail label="Copies" value={String(f.copies)} />
-                    <Detail label="Color" value={f.colorMode === 'black-and-white' ? 'B&W' : 'Colored'} />
-                    <Detail label="Paper Size" value={f.paperSize} />
-                    {f.softboundColor && <Detail label="Softbound Color" value={f.softboundColor} className="col-span-2" />}
+                    <Detail label="Color" value={f.color_mode === 'black-and-white' ? 'B&W' : 'Colored'} />
+                    <Detail label="Paper Size" value={f.paper_size} />
+                    {f.softbound_color && <Detail label="Softbound Color" value={f.softbound_color} className="col-span-2" />}
                     {f.notes && <Detail label="Notes" value={f.notes} className="col-span-2" />}
                     
                     </div>
@@ -93,13 +97,19 @@ export default function ReviewModal({
             <Separator />
 
             <Button
-                onClick={() => {
-                    onConfirm();
-                    setOpen(false);
+                disabled={loading}
+                onClick={async () => {
+                try {
+                    setLoading(true)
+                    await onConfirm()
+                    setOpen(false)
+                } finally {
+                    setLoading(false)
+                }
                 }}
                 className="w-full py-5 font-bold cursor-pointer text-base bg-orange-500 hover:bg-orange-400 text-white mt-1"
             >
-                Confirm Order →
+                {loading ? "Processing..." : "Confirm Order →"}
             </Button>
             </DialogContent>
         </Dialog>
