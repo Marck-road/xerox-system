@@ -71,25 +71,44 @@ export default function FileCard({
             {/* Pages + Copies */}
             <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
-                <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                    Copies <span className="text-orange-500">*</span>
-                </Label>
-                <Input type="number" min={1}
-                    value={file.copies} onChange={(e) => updateFile(file.file_id, 'copies', Number(e.target.value))}
-                    className="border-zinc-200 focus-visible:ring-orange-400 h-9 text-sm" />
+                    <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                        Copies <span className="text-orange-500">*</span>
+                    </Label>
+                    <Input
+                        type="number"
+                        min={1}
+                        value={file.copies === 0 ? '' : file.copies}
+                        onChange={(e) => {
+                            const val = e.target.value
+                            if (val === '' || val === '0') {
+                            updateFile(file.file_id, 'copies', 0)
+                            return
+                            }
+                            const num = parseInt(val, 10)
+                            if (!isNaN(num) && num >= 1) {
+                            updateFile(file.file_id, 'copies', num)
+                            }
+                        }}
+                        onBlur={(e) => {
+                            if (!e.target.value || Number(e.target.value) < 1) {
+                            updateFile(file.file_id, 'copies', 1)
+                            }
+                        }}
+                        className="border-zinc-200 focus-visible:ring-orange-400 h-9 text-sm"
+                    />
                 </div>
                 <div className="flex flex-col gap-1">
-                <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Paper Size</Label>
-                <Select value={file.paper_size} onValueChange={(v) => updateFile(file.file_id, 'paper_size', v as PaperSize)}>
-                    <SelectTrigger className="border-zinc-200 focus:ring-orange-400 h-9 text-xs">
-                    <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                    <SelectItem value="short">Short</SelectItem>
-                    <SelectItem value="long">Long</SelectItem>
-                    <SelectItem value="A4">A4</SelectItem>
-                    </SelectContent>
-                </Select>
+                    <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Paper Size</Label>
+                    <Select value={file.paper_size} onValueChange={(v) => updateFile(file.file_id, 'paper_size', v as PaperSize)}>
+                        <SelectTrigger className="border-zinc-200 focus:ring-orange-400 h-9 text-xs">
+                        <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                        <SelectItem value="short">Short</SelectItem>
+                        <SelectItem value="long">Long</SelectItem>
+                        <SelectItem value="A4">A4</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 

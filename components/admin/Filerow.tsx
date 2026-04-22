@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { FileOrder } from '@/types/order'
-import { getFileDownloadUrl } from '@/lib/supabase/orders'
+import { getFileDownloadUrl, getFileViewUrl } from '@/lib/supabase/orders'
 import { SERVICE_LABEL, SIZE_LABEL } from '@/lib/formatters'
 import { Download, FileText, Printer } from 'lucide-react'
 
@@ -12,7 +12,7 @@ interface FileRowProps {
   orderId: string
 }
 
-export function FileRow({ file, orderId }: FileRowProps) {
+export function FileRow({ file }: FileRowProps) {
   const [downloading, setDownloading] = useState(false)
 
   async function handleDownload() {
@@ -22,14 +22,16 @@ export function FileRow({ file, orderId }: FileRowProps) {
       const a = document.createElement('a')
       a.href = url
       a.download = file.file_path.split('/').pop() ?? 'file'
+      a.style.display = 'none'
+      document.body.appendChild(a)
       a.click()
+      document.body.removeChild(a)
     }
     setDownloading(false)
   }
 
   async function handlePrint() {
-    const url = await getFileDownloadUrl(file.file_path)
-    if (!url) return
+    const url = getFileViewUrl(file.file_path)
     const printWindow = window.open(url, '_blank')
     if (printWindow) {
       printWindow.onload = () => {

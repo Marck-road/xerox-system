@@ -9,9 +9,8 @@ import FileUpload from '@/components/customer/FileUpload';
 import FileCard from '@/components/customer/FileCard';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '../ui/button';
-import { DatePicker as RawDatePicker, DatePickerProps } from '@/components/ui/datePicker';
 import { FileOrder } from '@/types/order';
-const DatePicker = RawDatePicker as React.ComponentType<DatePickerProps>
+import { DateTimePicker } from '@/components/ui/dateTimePicker';
 
 type Props = {
     formRef: React.RefObject<HTMLDivElement | null>;
@@ -63,6 +62,7 @@ export default function CustomerForm({
     isValid
 }: Props) {
     const fileInput = useRef<HTMLInputElement>(null);
+    const isEmailValid = email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
     return(
         <div ref={formRef} className="w-full flex justify-center px-4 py-14 bg-white">
@@ -92,12 +92,21 @@ export default function CustomerForm({
                   <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
                     Email <span className="text-orange-500">*</span>
                   </Label>
-                  <Input value={email} onChange={(e) => setEmail(e.target.value)} type='email'
-                    placeholder="youremail@gmail.com" className="border-zinc-200 focus-visible:ring-orange-400" />
+                  <Input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    required
+                    placeholder="youremail@gmail.com"
+                    className="border-zinc-200 focus-visible:ring-orange-400 invalid:not-placeholder-shown:border-destructive"
+                  />
+                  {email !== '' && !isEmailValid && (
+                    <p className="text-xs text-destructive mt-0.5">Please enter a valid email address.</p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                    Branch <span className="text-orange-500">*</span>
+                    Preferred Pick-up Branch <span className="text-orange-500">*</span>
                   </Label>
                   <Select value={branch} onValueChange={setBranch}>
                     <SelectTrigger className="h-9 w-full rounded-3xl border border-zinc-200 focus-visible:ring-orange-400 bg-input/50 px-3 text-sm transition-[color,box-shadow,background-color] focus:ring-3 focus:ring-ring/30 focus:border-ring">
@@ -112,9 +121,12 @@ export default function CustomerForm({
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                    Preferred Pick-up Date
+                    Preferred Pick-up Date & Time
                   </Label>
-                  <DatePicker value={pickupDate} onChange={setPickupDate} />
+                  <DateTimePicker
+                    value={pickupDate}
+                    onChange={setPickupDate}
+                  />
                 </div>
               </div>
 

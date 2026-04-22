@@ -25,8 +25,9 @@ export const SIZE_LABEL: Record<FileOrder['paper_size'], string> = {
 }
 
 export function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-PH', {
-    year: 'numeric', month: 'short', day: 'numeric',
+  return new Date(iso).toLocaleString('en-PH', {
+    year: 'numeric', month: 'long', day: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true,
   })
 }
 

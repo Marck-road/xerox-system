@@ -113,7 +113,7 @@ export default function AdminDashboard() {
                   <SelectContent>
                     <SelectItem value="all">All statuses</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="ready">Ready</SelectItem>
+                    <SelectItem value="ready">Ready for Pickup</SelectItem>
                     <SelectItem value="completed">Completed</SelectItem>
                     <SelectItem value="cancelled">Cancelled</SelectItem>
                   </SelectContent>
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
               <span className="w-20">Order ID</span>
               <span className="w-36">Name</span>
               <span className="hidden sm:block w-40">Email</span>
-              <span className="hidden md:block w-24">Branch</span>
+              <span className="hidden md:block w-25">Branch</span>
               <span className="hidden lg:block w-24">Pick-up</span>
               <span className="hidden lg:block w-28">Submitted</span>
               <span className="hidden lg:block w-28">Total Price</span>

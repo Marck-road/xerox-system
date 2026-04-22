@@ -75,7 +75,7 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
               <h3 className="text-base font-extrabold text-zinc-900">Set order price</h3>
               <p className="text-xs text-zinc-400 mt-1">
                 Enter the total price before marking this order as{' '}
-                <span className="font-semibold text-blue-600">Ready</span>.
+                <span className="font-semibold text-blue-600">Ready for Pickup</span>.
               </p>
             </div>
             <div className="flex flex-col gap-1.5">
@@ -154,7 +154,7 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="ready">Ready</SelectItem>
+                      <SelectItem value="ready">Ready for Pickup</SelectItem>
                       <SelectItem value="cancelled">Cancelled</SelectItem>
                     </SelectContent>
                   </Select>

@@ -110,11 +110,20 @@ export async function getOrders(): Promise<Order[]> {
   }))
 }
 
-export function getFileDownloadUrl(path: string) {
-  const { data } = supabase
-    .storage
+export async function getFileDownloadUrl(filePath: string): Promise<string | null> {
+  const { data } = supabase.storage
     .from('files')
-    .getPublicUrl(path)
+    .getPublicUrl(filePath, {
+      download: true,
+    })
+
+  return data.publicUrl
+}
+
+export function getFileViewUrl(filePath: string): string {
+  const { data } = supabase.storage
+    .from('files')
+    .getPublicUrl(filePath)
 
   return data.publicUrl
 }

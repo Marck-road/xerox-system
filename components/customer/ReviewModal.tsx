@@ -53,8 +53,13 @@ export default function ReviewModal({
                 <p className="text-sm font-semibold text-zinc-800">{name}</p>
                 <p className="text-xs text-zinc-500">{email}</p>
                 {pickupDate && (
-                <p className="text-xs text-zinc-500">Pick-up: {pickupDate.toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                )}
+                    <p className="text-xs text-zinc-500">
+                        Pick-up: {pickupDate.toLocaleString('en-PH', {
+                        year: 'numeric', month: 'long', day: 'numeric',
+                        hour: 'numeric', minute: '2-digit', hour12: true,
+                        })}
+                    </p>
+                )}s
             </div>
 
             {/* Per-file summary */}
