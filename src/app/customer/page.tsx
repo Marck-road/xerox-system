@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 
-import { useFileUpload } from '@/hooks/useFileUpload';
 import { useCustomerForm } from '@/hooks/useCustomerForm';
+import { useFileUpload } from '@/hooks/useFileUpload';
 import { FileOrder } from '@/types/order';
 
+import CustomerForm from '@/components/customer/CustomerForm';
 import Hero from '@/components/customer/Hero';
 import ReviewModal from '@/components/customer/ReviewModal';
-import CustomerForm from '@/components/customer/CustomerForm';
 import SuccessScreen from '@/components/customer/SuccessScreen';
 
 import { submitOrder } from '@/lib/supabase/orders';
@@ -24,6 +24,7 @@ export default function CustomerPage() {
   const [submittedFiles, setSubmittedFiles] = useState<FileOrder[]>([]);
   const [submittedName, setSubmittedName] = useState('');
   const [submittedEmail, setSubmittedEmail] = useState('');
+  const [submittedOrderID, setSubmittedOrderID] = useState<number | null>(null);
 
   const {
     files,
@@ -58,11 +59,12 @@ export default function CustomerPage() {
 
   const handleConfirm = async () => {
     try {
-      await submitOrder({ name, email, branch, pickupDate, files });
+      const orderID = await submitOrder({ name, email, branch, pickupDate, files });
 
       setSubmittedFiles(files);
       setSubmittedName(name);
       setSubmittedEmail(email);
+      setSubmittedOrderID(orderID);
 
       setSubmitted(true);
       setShowReview(false);
@@ -79,6 +81,7 @@ export default function CustomerPage() {
         name={submittedName}
         email={submittedEmail}
         files={submittedFiles}
+        orderID={submittedOrderID}
         onReset={() => {
           setSubmitted(false);
           resetAll();
@@ -131,6 +134,7 @@ export default function CustomerPage() {
         files={files}
         name={name}
         email={email}
+        branch={branch}
         pickupDate={pickupDate}
         onConfirm={async () => {
           await handleConfirm()

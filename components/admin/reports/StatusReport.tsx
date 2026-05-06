@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { TrendingUp } from 'lucide-react'
 import { Order } from '@/types/order'
+import { TrendingUp } from 'lucide-react'
 import { StatusBadge } from '../Statusbadge'
 
 

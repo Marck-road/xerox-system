@@ -1,19 +1,34 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { GitBranch } from 'lucide-react'
 
 interface Props {
   byBranch: [string, number][]
-  totalOrders: number
+  totalOrders: number,
+  dateFilter: 'all' | 'month'
+  setDateFilter: (value: 'all' | 'month') => void
 }
 
-export function OrdersByBranch({ byBranch, totalOrders }: Props) {
+export function OrdersByBranch({ byBranch, totalOrders, dateFilter, setDateFilter }: Props) {
   return (
     <Card className="border border-zinc-200 shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-extrabold text-zinc-900 flex items-center gap-2">
-          <GitBranch className="w-4 h-4 text-orange-500" /> Orders by Branch
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-sm font-extrabold text-zinc-900 flex items-center gap-2">
+            <GitBranch className="w-4 h-4 text-orange-500" /> Orders by Branch
+          </CardTitle>
+
+          <Select value={dateFilter} onValueChange={setDateFilter}>
+            <SelectTrigger className="h-7 w-28 text-xs border-zinc-200">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="month">This Month</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent className="pt-0">
         <Table>

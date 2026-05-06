@@ -1,21 +1,36 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { PhilippinePeso } from 'lucide-react'
 import { formatPeso } from '@/lib/formatters'
+import { PhilippinePeso } from 'lucide-react'
 
 interface Props {
   revenueByBranch: [string, number][]
   totalRevenue: number
   pendingRevenue: number
+  dateFilter: 'all' | 'month'
+  setDateFilter: (value: 'all' | 'month') => void
 }
 
-export function RevenueByBranch({ revenueByBranch, totalRevenue, pendingRevenue }: Props) {
+export function RevenueByBranch({ revenueByBranch, totalRevenue, pendingRevenue, dateFilter, setDateFilter }: Props) {
   return (
     <Card className="border border-zinc-200 shadow-sm sm:col-span-2">
       <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-extrabold text-zinc-900 flex items-center gap-2">
-          <PhilippinePeso className="w-4 h-4 text-orange-500" /> Revenue by Branch
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-sm font-extrabold text-zinc-900 flex items-center gap-2">
+            <PhilippinePeso className="w-4 h-4 text-orange-500" /> Revenue by Branch
+          </CardTitle>
+
+          <Select value={dateFilter} onValueChange={setDateFilter}>
+            <SelectTrigger className="h-7 w-28 text-xs border-zinc-200">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="month">This Month</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent className="pt-0">
         <Table>
@@ -46,8 +61,8 @@ export function RevenueByBranch({ revenueByBranch, totalRevenue, pendingRevenue 
         </Table>
         {pendingRevenue > 0 && (
           <div className="mt-3 pt-3 border-t border-zinc-100 flex items-center justify-between">
-            <span className="text-xs text-zinc-400">Pending revenue (ready orders)</span>
-            <span className="text-xs font-semibold text-blue-600">{formatPeso(pendingRevenue)}</span>
+            <span className="text-xs text-zinc-400">Pending revenue (orders waiting for payment, printing, or for pick-up)</span>
+            <span className="text-xs font-semibold text-red-400">{formatPeso(pendingRevenue)}</span>
           </div>
         )}
       </CardContent>

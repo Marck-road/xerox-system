@@ -1,4 +1,4 @@
-import { Order, OrderDB, SubmitOrderData } from '@/types/order'
+import { Order, OrderDB, SubmitOrderData } from '@/types/order';
 import { createClient } from './client';
 
 const supabase = createClient();
@@ -11,7 +11,7 @@ export async function submitOrder({ name, email, branch, pickupDate, files }: Su
             email,
             branch,
             pickup_date: pickupDate?.toISOString(),
-            status: 'pending',
+            status: 'new',
             updated_at: new Date().toISOString(),
         })
         .select('order_id')
@@ -65,6 +65,8 @@ export async function submitOrder({ name, email, branch, pickupDate, files }: Su
         pickup_date: pickupDate,
       }),
     })
+
+    return order.order_id;
 }
 
 // ── Fetch all orders with their file_orders joined ──
@@ -131,8 +133,6 @@ export function getFileViewUrl(filePath: string): string {
 // ── Update an order's status ──
 export async function updateOrderStatus(
   orderId: string,
-  name: string,
-  email: string,
   status: Order['status'],
   totalPrice?: number,
 ): Promise<void> {
@@ -161,7 +161,9 @@ export async function updateOrderStatus(
     console.error('Failed to fetch order:', fetchError)
     return
   }
+}
 
+export async function sendEmailNotification(type: 'ORDER_PAYMENT' | 'ORDER_READY', order: Order, totalPrice?: number) {
   try {
     await fetch('https://hook.eu1.make.com/jwdrl2qk8i7eueabydbl8ht54gwhxoav', {
       method: 'POST',
@@ -169,7 +171,7 @@ export async function updateOrderStatus(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        type: 'ORDER_READY',
+        type: type,
         ...order,
         price: totalPrice,
       }),

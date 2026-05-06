@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
 
 export default function Hero({ onScroll }: { onScroll: () => void }) {
   return (
@@ -13,8 +13,8 @@ export default function Hero({ onScroll }: { onScroll: () => void }) {
           <h1 className="text-white text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-md">
             Connections Copier
           </h1>
-          <p className="text-zinc-100 text-sm sm:text-base max-w-sm drop-shadow">
-            Fill out your order below — no account needed!
+          <p className="text-zinc-100 text-sm sm:text-base max-w-lg drop-shadow">
+            Fill out your order below — no account needed! <span className="text-orange-300 font-semibold">Submit </span>your order, <span className="text-orange-300 font-semibold">await </span>payment details, <span className="text-orange-300 font-semibold">pay</span> via GCash, and we&apos;ll <span className="text-orange-300 font-semibold">notify</span> you once it&apos;s ready for <span className="text-orange-300 font-semibold">pickup</span> at your selected branch. It&apos;s that simple!
           </p>
           <button onClick={onScroll} className="mt-1 flex flex-col items-center cursor-pointer gap-1 text-orange-300 hover:text-orange-200 transition-colors">
             <span className="text-xs font-bold tracking-widest uppercase">Order Now</span>

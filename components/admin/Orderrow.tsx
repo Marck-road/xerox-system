@@ -1,21 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import {
+  AccordionContent,
+  AccordionItem, AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
-import {
-  AccordionItem, AccordionTrigger, AccordionContent,
-} from '@/components/ui/accordion'
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select'
-import { Order } from '@/types/order'
-import { updateOrderStatus } from '@/lib/supabase/orders'
+import { Separator } from '@/components/ui/separator'
 import { formatDate } from '@/lib/formatters'
+import { sendEmailNotification, updateOrderStatus } from '@/lib/supabase/orders'
+import { Order } from '@/types/order'
+import { CheckCircle2 } from 'lucide-react'
+import { useState } from 'react'
 import { FileRow } from './Filerow'
 import { StatusBadge } from './Statusbadge'
-import { CheckCircle2 } from 'lucide-react'
 
 interface OrderRowProps {
   order: Order
@@ -29,12 +30,15 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
 
   async function handleStatusChange(value: string) {
     const newStatus = value as Order['status']
-    if (newStatus === 'ready') {
+    if (newStatus === 'pending') {
       setShowPriceModal(true)
       return
     }
     setUpdating(true)
-    await updateOrderStatus(order.order_id, order.name, order.email, newStatus)
+    await updateOrderStatus(order.order_id, newStatus)
+    if (newStatus === 'ready') {
+      await sendEmailNotification('ORDER_READY', order)
+    }
     onStatusChange(order.order_id, newStatus)
     setUpdating(false)
   }
@@ -44,8 +48,9 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
     if (!price || isNaN(numericPrice) || numericPrice <= 0) return
     setUpdating(true)
     setShowPriceModal(false)
-    await updateOrderStatus(order.order_id, order.name, order.email, 'ready', numericPrice)
-    onStatusChange(order.order_id, 'ready', numericPrice)
+    await updateOrderStatus(order.order_id, 'pending', numericPrice)
+    await sendEmailNotification('ORDER_PAYMENT', order, numericPrice)
+    onStatusChange(order.order_id, 'pending', numericPrice)
     setPrice('')
     setUpdating(false)
   }
@@ -57,7 +62,7 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
 
   async function handleMarkComplete() {
     setUpdating(true)
-    await updateOrderStatus(order.order_id, order.name, order.email, 'completed')
+    await updateOrderStatus(order.order_id, 'completed')
     onStatusChange(order.order_id, 'completed')
     setUpdating(false)
   }
@@ -75,7 +80,7 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
               <h3 className="text-base font-extrabold text-zinc-900">Set order price</h3>
               <p className="text-xs text-zinc-400 mt-1">
                 Enter the total price before marking this order as{' '}
-                <span className="font-semibold text-blue-600">Ready for Pickup</span>.
+                <span className="font-semibold text-orange-400">For Printing</span>.
               </p>
             </div>
             <div className="flex flex-col gap-1.5">
@@ -107,7 +112,7 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
                 className="bg-orange-500 hover:bg-orange-400 text-white"
                 disabled={!price || isNaN(Number(price)) || Number(price) <= 0}
                 onClick={handlePriceConfirm}>
-                Confirm & mark ready
+                Confirm & Send Email
               </Button>
             </div>
           </div>
@@ -153,8 +158,11 @@ export function OrderRow({ order, onStatusChange }: OrderRowProps) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="new">New</SelectItem>
+                      <SelectItem value="pending">Pending Payment</SelectItem>
+                      <SelectItem value="printing">For Printing</SelectItem>
                       <SelectItem value="ready">Ready for Pickup</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
                       <SelectItem value="cancelled">Cancelled</SelectItem>
                     </SelectContent>
                   </Select>

@@ -24,7 +24,7 @@ export interface Order {
   files: FileOrder[];
   created_at: string; 
   updated_at: string;
-  status: 'pending' | 'ready' | 'completed' | 'cancelled';
+  status: 'new' | 'pending' | 'printing' | 'ready' | 'completed' | 'cancelled';
   total_price: number | null;
 }
 

@@ -2,14 +2,16 @@ import { Button } from '@/components/ui/button';
 import { FileOrder } from '@/types/order';
 
 type Props = {
-  name: string | undefined;
-  email: string | undefined;
-  files: FileOrder[];
-  onReset: () => void;
+    name: string | undefined;
+    orderID: number | null;
+    email: string | undefined;
+    files: FileOrder[];
+    onReset: () => void;
 };
 
 export default function SuccessScreen({ 
     name,
+    orderID,
     email,
     files,
     onReset 
@@ -24,7 +26,7 @@ export default function SuccessScreen({
             <div>
                 <h2 className="text-2xl font-extrabold text-zinc-900">Order Submitted!</h2>
                 <p className="text-zinc-500 text-sm mt-1 max-w-xs">
-                    Thanks <span className="text-orange-500 font-semibold">{name}</span>! We&apos;ll reach you at{' '}
+                    Thanks <span className="text-orange-500 font-semibold">{name}</span>! Your order ID is <span className="text-orange-500 font-semibold">{orderID}</span>. We&apos;ll reach you at{' '}
                     <span className="font-semibold">{email}</span> once your order is ready.
                 </p>
             </div>

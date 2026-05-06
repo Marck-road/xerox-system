@@ -1,8 +1,8 @@
-import { ColorMode, SoftboundColor, PaperSize, Service, FileOrder } from '@/types/order';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { ColorMode, FileOrder, PaperSize, Service, SoftboundColor } from '@/types/order';
 
 type Props = {
     file: FileOrder;
@@ -122,7 +122,7 @@ export default function FileCard({
                     </SelectTrigger>
                     <SelectContent>
                     <SelectItem value="colored">Colored — ₱5-20/pg</SelectItem>
-                    <SelectItem value="black-and-white">Black & White — ₱3/pg</SelectItem>
+                    <SelectItem value="black-and-white">Black & White — ₱4/pg</SelectItem>
                     </SelectContent>
                 </Select>
                 </div>
@@ -149,7 +149,7 @@ export default function FileCard({
             <div className="flex flex-col gap-1">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Notes for this file</Label>
                 <Textarea value={file.notes} onChange={(e) => updateFile(file.file_id, 'notes', e.target.value)}
-                placeholder="Double-sided? Specific pages only?" rows={2}
+                placeholder="Any additional details? Specific pages only?" rows={2}
                 className="border-zinc-200 focus-visible:ring-orange-400 resize-none text-sm" />
             </div>
             </div>

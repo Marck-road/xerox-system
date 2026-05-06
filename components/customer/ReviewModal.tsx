@@ -1,7 +1,9 @@
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import {
+    Dialog, DialogContent,
+    DialogDescription,
+    DialogHeader, DialogTitle,
+} from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { FileOrder } from '@/types/order';
 import React from 'react';
@@ -11,6 +13,7 @@ type Props = {
     setOpen: (v: boolean) => void;
     name: string;
     email: string;
+    branch: string;
     pickupDate: Date | undefined;
     files: FileOrder[];
     onConfirm: () => Promise<void>;
@@ -18,18 +21,19 @@ type Props = {
 
 function Detail({ label, value, className }: { label: string; value: string; className?: string }) {
     return (
-      <div className={className}>
-        <p className="text-xs text-zinc-400">{label}</p>
-        <p className="text-xs font-semibold text-zinc-700 capitalize">{value}</p>
-      </div>
+        <div className={className}>
+            <p className="text-xs text-zinc-400">{label}</p>
+            <p className="text-xs font-semibold text-zinc-700 capitalize">{value}</p>
+        </div>
     )
-  }
+}
 
 export default function ReviewModal({
     open,
     setOpen,
     name,
     email,
+    branch,
     pickupDate,
     files,
     onConfirm,
@@ -52,14 +56,15 @@ export default function ReviewModal({
                 <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Customer</p>
                 <p className="text-sm font-semibold text-zinc-800">{name}</p>
                 <p className="text-xs text-zinc-500">{email}</p>
+                <p className="text-xs text-zinc-500">Pick-up Branch: {branch}</p>
                 {pickupDate && (
                     <p className="text-xs text-zinc-500">
-                        Pick-up: {pickupDate.toLocaleString('en-PH', {
+                        Pick-up Date: {pickupDate.toLocaleString('en-PH', {
                         year: 'numeric', month: 'long', day: 'numeric',
                         hour: 'numeric', minute: '2-digit', hour12: true,
-                        })}
+                        })} 
                     </p>
-                )}s
+                )}
             </div>
 
             {/* Per-file summary */}
